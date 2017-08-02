@@ -1,0 +1,17 @@
+#!/bin/bash
+
+function stop {
+	echo "$(date):we received a signal, sleeping 10 seconds"
+	sleep 10
+	echo "$(date):stop sleeping"
+	kill -s WINCH $PID
+	wait $PID
+	echo "$(date):exit"
+}
+
+trap stop WINCH
+
+httpd-foreground &
+PID=$!
+
+wait $!
